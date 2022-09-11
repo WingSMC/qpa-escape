@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import useScoreStore from "../store/scoreStore"
+import useScoreStore from "../data/store/scoreStore"
 
 const store = useScoreStore()
 </script>

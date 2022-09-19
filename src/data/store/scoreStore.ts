@@ -28,7 +28,10 @@ const useScoreStore = defineStore("scoreStore", {
 					this.$state[key] = JSON.parse(item)
 				}
 			}
-		}
+		},
+		PERSIST_ITEM(key: keyof State) {
+			localStorage.setItem(key, JSON.stringify(this.$state[key]))
+		},
 	},
 })
 

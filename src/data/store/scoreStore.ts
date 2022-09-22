@@ -19,7 +19,7 @@ const useScoreStore = defineStore("scoreStore", {
 	actions: {
 		ADD_POINTS(points: number[]) {
 			this.$state.teams.forEach((team, i) => { team.points += points[i] })
-			localStorage.setItem("teams", JSON.stringify(this.$state.teams))
+			this.PERSIST_ITEM("teams")
 		},
 		LOAD_ITEM(key: keyof State) {
 			if (key in this.$state) {
@@ -32,7 +32,10 @@ const useScoreStore = defineStore("scoreStore", {
 		RESET() {
 			localStorage.clear()
 			this.$reset()
-		}
+		},
+		PERSIST_ITEM(key: keyof State) {
+			localStorage.setItem(key, JSON.stringify(this.$state[key]))
+		},
 	},
 })
 

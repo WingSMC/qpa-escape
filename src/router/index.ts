@@ -8,16 +8,16 @@ const router = createRouter({
 		{
 			path: "/dashboard",
 			name: "dashboard",
-			component: Dashboard
+			component: Dashboard,
 		},
 		{
 			path: "/scoreboard",
 			name: "scoreboard",
-			component: Scoreboard
+			component: Scoreboard,
 		},
 		{
 			path: "/:pathMatch(.*)*",
-			redirect: { name: "dashboard" }
+			redirect: { name: "dashboard" },
 		}
 	],
 	history: createWebHashHistory()

@@ -12,9 +12,9 @@ interface State {
 
 const useScoreStore = defineStore("scoreStore", {
 	state: () => ({
-		teams: createTeams(),
+		teams: JSON.parse(localStorage.getItem("teams")!!) ?? createTeams(),
 		questions: createQuestions(),
-		round: 0,
+		round: JSON.parse(localStorage.getItem("round")!!) ?? 0,
 	}) as State,
 	actions: {
 		ADD_POINTS(points: number[]) {
@@ -28,11 +28,15 @@ const useScoreStore = defineStore("scoreStore", {
 					this.$state[key] = JSON.parse(item)
 				}
 			}
+		},
+		RESET() {
+			localStorage.clear()
+			this.$reset()
 		}
 	},
 })
 
-window.addEventListener("storage", (e: StorageEvent) => {
+addEventListener("storage", (e: StorageEvent) => {
 	const store = useScoreStore()
 	const { key } = e
 	store.LOAD_ITEM(key as keyof State)

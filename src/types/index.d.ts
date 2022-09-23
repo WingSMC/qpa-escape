@@ -11,5 +11,4 @@ export type Question = {
 export type Team = {
 	name: string,
 	logo: string,
-	points: number
 }

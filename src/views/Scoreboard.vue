@@ -8,7 +8,7 @@ const store = useScoreStore()
 	<table class="teams" ref="table">
 		<tr class="team" v-for="(team, i) in store.$state.teams" :key="team.name">
 			<td>{{ team.name }}</td>
-			<td>{{ team.points }}</td>
+			<td>{{ store.$state.points[i] }}</td>
 		</tr>
 	</table>
 </template>

@@ -25,9 +25,19 @@ const useScoreStore = defineStore("scoreStore", {
 			}
 			this.PERSIST_ITEM("points")
 		},
-		INCREMENT_ROUND() {
-			++this.$state.round
+		NEXT_ROUND() {
+			if (this.$state.round + 1 < this.$state.questions.length) {
+				++this.$state.round
+				this.PERSIST_ITEM("round")
+			}
+		},
+		SET_ROUND(round: number): boolean {
+			if (round < 0 || this.$state.questions.length <= round) {
+				return false
+			}
+			this.$state.round = round
 			this.PERSIST_ITEM("round")
+			return true
 		},
 		LOAD_ITEM(key: keyof State) {
 			if (key in this.$state) {
@@ -48,7 +58,10 @@ const useScoreStore = defineStore("scoreStore", {
 		},
 	},
 	getters: {
-		currentQuestion: (state) => state.questions[state.round]
+		currentQuestion: (state): Question => state.questions[state.round],
+		nextQuestion: (state): Question => (
+			state.questions[state.round + 1] ?? { question: "Nincs több kédés.", answers: [] }
+		),
 	},
 })
 

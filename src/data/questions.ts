@@ -17,5 +17,23 @@ export default () => [
 				correct: false
 			},
 		]
+	},
+
+	{
+		question: "2 kérdés",
+		answers: [
+			{
+				answer: "1 válasz",
+				correct: false
+			},
+			{
+				answer: "2 válasz",
+				correct: false
+			},
+			{
+				answer: "3 válasz",
+				correct: false
+			},
+		]
 	}
 ] as Question[]

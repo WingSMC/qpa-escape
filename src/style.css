@@ -1,4 +1,5 @@
 :root {
+  --theme-1: #5b5b5b;
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
@@ -13,6 +14,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 a {
@@ -65,6 +70,19 @@ button:focus-visible {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+table {
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 5px;
+}
+
+tfoot td {
+  border-top: 1px solid #5b5b5b;
 }
 
 @media (prefers-color-scheme: light) {

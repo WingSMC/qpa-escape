@@ -65,12 +65,9 @@ const useScoreStore = defineStore("scoreStore", {
 	},
 })
 
-
-addEventListener("storage", (e: StorageEvent) => {
+addEventListener("storage", ({ key }: StorageEvent) => {
 	const store = useScoreStore()
-	console.log(e)
-
-	store.LOAD_ITEM(e.key as keyof State)
+	store.LOAD_ITEM(key as keyof State)
 })
 
 export default useScoreStore

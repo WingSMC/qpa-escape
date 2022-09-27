@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { computed, ref } from "vue"
+import { onKeyStroke } from "@vueuse/core"
 import useScoreStore from "../data/store/scoreStore"
 
 const store = useScoreStore()
 const inputs = ref(null as unknown as HTMLInputElement[])
-let teams = ref([0, 0, 0] as Array<number | string>)
+const teams = ref([0, 0, 0] as Array<number | string>)
+
+onKeyStroke("ArrowRight", store.NEXT_ROUND)
+onKeyStroke("ArrowLeft", store.PREV_ROUND)
 
 const clearField = (i: number) => (teams.value[i] ||= "")
 const fillField = (i: number) => (teams.value[i] ||= 0)
@@ -19,9 +23,11 @@ const setRound = (e: Event) => {
 }
 
 const commitTeams = () => {
+	fillField(0)
 	store.ADD_POINTS(teams.value as number[])
 	teams.value = [0, 0, 0]
 	inputs.value[0].focus()
+	clearField(0)
 }
 
 const openScoreboard = () => {
@@ -100,15 +106,23 @@ const nextQuestion = computed(() => store.nextQuestion)
 				<tr>
 					<td>Round</td>
 					<td>
-						<button type="button" @blur="store.NEXT_ROUND">⏭️</button>
+						<button
+							type="button"
+							class="increment-round"
+							@click="store.NEXT_ROUND"
+						>
+							⏭️
+						</button>
 					</td>
-					<input
-						type="number"
-						min="0"
-						max="20"
-						:value="store.$state.round"
-						@change="setRound"
-					/>
+					<td>
+						<input
+							type="number"
+							min="0"
+							max="20"
+							:value="store.$state.round"
+							@change="setRound"
+						/>
+					</td>
 				</tr>
 			</tfoot>
 		</table>
@@ -118,11 +132,12 @@ const nextQuestion = computed(() => store.nextQuestion)
 	</form>
 </template>
 
-<style>
+<style lang="scss">
+@use "../style/vars" as *;
 .task {
 	margin: 10px 0;
 	width: 100%;
-	border: 1px solid var(--theme-1);
+	border: 1px solid $theme-border;
 	border-radius: 15px;
 	padding: 10px;
 }
@@ -135,5 +150,9 @@ const nextQuestion = computed(() => store.nextQuestion)
 
 .task.next {
 	transform: scale(0.6);
+}
+
+.increment-round {
+	width: 100%;
 }
 </style>

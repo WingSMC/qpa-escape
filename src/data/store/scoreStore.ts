@@ -36,6 +36,12 @@ const useScoreStore = defineStore("scoreStore", {
 			}
 			this.PERSIST_ITEM("round")
 		},
+		PREV_ROUND() {
+			if (this.$state.round > 0) {
+				--this.$state.round
+				this.PERSIST_ITEM("round")
+			}
+		},
 		SET_ROUND(round: number): boolean {
 			if (round < 0 || this.questions.length <= round) {
 				return false

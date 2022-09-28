@@ -29,18 +29,18 @@ const useScoreStore = defineStore("scoreStore", {
 			}
 			this.PERSIST_ITEM("points")
 		},
-		NEXT_ROUND() {
-			if (++this.round >= this.questions.length) {
-				--this.round
-				return
-			}
+		NEXT_ROUND(): boolean {
+			const nextRound = this.round + 1
+			if (nextRound >= this.questions.length) return false
+			this.round = nextRound
 			this.PERSIST_ITEM("round")
+			return true
 		},
-		PREV_ROUND() {
-			if (this.$state.round > 0) {
-				--this.$state.round
-				this.PERSIST_ITEM("round")
-			}
+		PREV_ROUND(): boolean {
+			if (this.$state.round <= 0) return false
+			--this.$state.round
+			this.PERSIST_ITEM("round")
+			return true
 		},
 		SET_ROUND(round: number): boolean {
 			if (round < 0 || this.questions.length <= round) {

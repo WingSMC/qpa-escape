@@ -18,7 +18,6 @@ export default () => [
 			},
 		]
 	},
-
 	{
 		question: "2 kérdés",
 		answers: [

@@ -42,6 +42,11 @@ body {
 	place-items: center;
 	min-width: 320px;
 	min-height: 100vh;
+	scroll-behavior: smooth;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
 }
 
 h1 {
@@ -74,10 +79,8 @@ button:focus-visible {
 }
 
 #app {
-	max-width: 1280px;
-	margin: 0 auto;
-	padding: 2rem;
 	text-align: center;
+	width: 100%;
 }
 
 table {

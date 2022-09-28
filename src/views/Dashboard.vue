@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue"
+import { computed, ref, onMounted } from "vue"
 import { onKeyStroke } from "@vueuse/core"
 import useScoreStore from "../data/store/scoreStore"
 
@@ -24,7 +24,7 @@ const setRound = (e: Event) => {
 
 const commitTeams = () => {
 	fillField(0)
-	store.ADD_POINTS(teams.value as number[])
+	store.NEXT_ROUND() && store.ADD_POINTS(teams.value as number[])
 	teams.value = [0, 0, 0]
 	inputs.value[0].focus()
 	clearField(0)
@@ -39,120 +39,116 @@ const nextQuestion = computed(() => store.nextQuestion)
 </script>
 
 <template>
-	<div class="tasksk">
-		<div class="task next">
-			<div class="question">{{ nextQuestion.question }}</div>
-			<div class="answers">
-				<div
-					class="answer"
-					v-for="answer in nextQuestion.answers"
-					:key="answer.answer"
-				>
-					{{ answer.answer }} {{ answer.correct ? "✔️" : "❌" }}
+	<div class="dashboard">
+		<div class="tasksk">
+			<div class="task next">
+				<div class="question">{{ nextQuestion.question }}</div>
+				<div class="answers">
+					<div
+						class="answer"
+						v-for="answer in nextQuestion.answers"
+						:key="answer.answer"
+					>
+						{{ answer.answer }} {{ answer.correct ? "✔️" : "❌" }}
+					</div>
+				</div>
+			</div>
+			<div class="task">
+				<div class="question">{{ currentQuestion.question }}</div>
+				<div class="answers">
+					<div
+						class="answer"
+						v-for="answer in currentQuestion.answers"
+						:key="answer.answer"
+					>
+						{{ answer.answer }} {{ answer.correct ? "✔️" : "❌" }}
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="task">
-			<div class="question">{{ currentQuestion.question }}</div>
-			<div class="answers">
-				<div
-					class="answer"
-					v-for="answer in currentQuestion.answers"
-					:key="answer.answer"
-				>
-					{{ answer.answer }} {{ answer.correct ? "✔️" : "❌" }}
-				</div>
-			</div>
-		</div>
+		<form @submit.prevent="commitTeams">
+			<table class="teams" ref="table">
+				<tbody>
+					<tr
+						class="team"
+						v-for="(team, i) in store.$state.teams"
+						:key="team.name"
+					>
+						<td>{{ team.name }}</td>
+						<td>
+							<input
+								type="number"
+								aria-label="Points to add"
+								min="0"
+								max="3"
+								step="1"
+								tabindex="1"
+								v-model.number="teams[i]"
+								@focus="clearField(i)"
+								@blur="fillField(i)"
+								ref="inputs"
+							/>
+						</td>
+						<td>
+							<input
+								type="number"
+								min="0"
+								max="20"
+								step="1"
+								tabindex="2"
+								:aria-label="`Points of team ${team.name}`"
+								v-model="store.$state.points[i]"
+								@change="store.PERSIST_ITEM('points')"
+							/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td>Round</td>
+						<td></td>
+						<td>
+							<input
+								type="number"
+								min="0"
+								max="20"
+								:value="store.$state.round"
+								@change="setRound"
+							/>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+			<button class="commit">Commit</button>
+			<button type="button" @click="store.RESET">Reset</button>
+			<button type="button" @click="openScoreboard">Scoreboard</button>
+		</form>
 	</div>
-	<form @submit.prevent="commitTeams">
-		<table class="teams" ref="table">
-			<tbody>
-				<tr
-					class="team"
-					v-for="(team, i) in store.$state.teams"
-					:key="team.name"
-				>
-					<td>{{ team.name }}</td>
-					<td>
-						<input
-							type="number"
-							aria-label="Points to add"
-							min="0"
-							max="3"
-							step="1"
-							tabindex="1"
-							v-model.number="teams[i]"
-							@focus="clearField(i)"
-							@blur="fillField(i)"
-							ref="inputs"
-						/>
-					</td>
-					<td>
-						<input
-							type="number"
-							min="0"
-							max="20"
-							step="1"
-							tabindex="2"
-							:aria-label="`Points of team ${team.name}`"
-							v-model="store.$state.points[i]"
-							@change="store.PERSIST_ITEM('points')"
-						/>
-					</td>
-				</tr>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td>Round</td>
-					<td>
-						<button
-							type="button"
-							class="increment-round"
-							@click="store.NEXT_ROUND"
-						>
-							⏭️
-						</button>
-					</td>
-					<td>
-						<input
-							type="number"
-							min="0"
-							max="20"
-							:value="store.$state.round"
-							@change="setRound"
-						/>
-					</td>
-				</tr>
-			</tfoot>
-		</table>
-		<button class="commit">Commit</button>
-		<button type="button" @click="store.RESET">Reset</button>
-		<button type="button" @click="openScoreboard">Scoreboard</button>
-	</form>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use "../style/vars" as *;
+.dashboard {
+	margin: 0 auto;
+	max-width: 800px;
+}
+
 .task {
 	margin: 10px 0;
 	width: 100%;
 	border: 1px solid $theme-border;
 	border-radius: 15px;
 	padding: 10px;
-}
-
-.question {
-	font-size: 1.5rem;
-	padding: 10px;
-	margin-bottom: 10px;
-}
-
-.task.next {
-	transform: scale(0.6);
-}
-
-.increment-round {
-	width: 100%;
+	.question {
+		font-size: 1.5rem;
+		padding: 10px;
+		margin-bottom: 10px;
+	}
+	&.next {
+		transform: scale(0.6);
+	}
+	.increment-round {
+		width: 100%;
+	}
 }
 </style>

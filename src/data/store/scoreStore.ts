@@ -20,22 +20,27 @@ const useScoreStore = defineStore("scoreStore", {
 	}) as State,
 	actions: {
 		ADD_POINTS(points: number[]) {
-			for (let i = 0; i < 3; i++) {
-				this.$state.points[i] += points[i]
+			for (let i = 0; i < 3; ++i) {
+				if (typeof points[i] !== "number") {
+					this.points[i] += Number(points[i])
+					continue
+				}
+				this.points[i] += points[i]
 			}
 			this.PERSIST_ITEM("points")
 		},
 		NEXT_ROUND() {
-			if (this.$state.round + 1 < this.$state.questions.length) {
-				++this.$state.round
-				this.PERSIST_ITEM("round")
+			if (++this.round >= this.questions.length) {
+				--this.round
+				return
 			}
+			this.PERSIST_ITEM("round")
 		},
 		SET_ROUND(round: number): boolean {
-			if (round < 0 || this.$state.questions.length <= round) {
+			if (round < 0 || this.questions.length <= round) {
 				return false
 			}
-			this.$state.round = round
+			this.round = round
 			this.PERSIST_ITEM("round")
 			return true
 		},
@@ -43,14 +48,14 @@ const useScoreStore = defineStore("scoreStore", {
 			if (key in this.$state) {
 				const item = localStorage.getItem(key)
 				if (item) {
-					this.$state[key] = JSON.parse(item)
+					this[key] = JSON.parse(item)
 				}
 			} else if (key === null) {
 				this.$reset()
 			}
 		},
 		PERSIST_ITEM(key: keyof State) {
-			localStorage.setItem(key, JSON.stringify(this.$state[key]))
+			localStorage.setItem(key, JSON.stringify(this[key]))
 		},
 		RESET() {
 			localStorage.clear()

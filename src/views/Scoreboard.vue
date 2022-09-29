@@ -1,16 +1,18 @@
 <script setup lang="ts">
+import { useWindowSize } from "@vueuse/core"
 import { computed, watch } from "vue"
 import useScoreStore from "../data/store/scoreStore"
 
 const store = useScoreStore()
 
-const vw10 = computed(() => window.innerWidth / 10)
+const { width } = useWindowSize()
+const vw10 = computed(() => width.value / 8)
 
 watch(
 	() => store.points,
 	(points) => {
 		const maxPointsM6 =
-			points.reduce((acc, cur) => (acc > cur ? acc : cur), 0) - 4
+			points.reduce((acc, cur) => (acc > cur ? acc : cur), 0) - 6
 		const left = maxPointsM6 > 0 ? maxPointsM6 * vw10.value : 0
 
 		scrollTo({
@@ -44,7 +46,8 @@ watch(
 $column-width: var(--column-width);
 
 .scoreboard {
-	--column-width: 10vw;
+	// TODO set this prop from JS
+	--column-width: 12.5vw;
 	height: 100vh;
 }
 

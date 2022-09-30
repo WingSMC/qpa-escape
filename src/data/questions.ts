@@ -136,5 +136,94 @@ export default () => [
 				correct: false
 			},
 		]
+	},
+	{
+		question: "Évfordulók",
+		answers: [
+			{
+				// 6
+				answer: "Vas",
+				correct: true
+			},
+			{
+				// 50
+				answer: "Platina",
+				correct: true
+			},
+			{
+				// 30
+				answer: "Gyöngy",
+				correct: true
+			},
+		]
+	},
+	{
+		question: "Kia által gyártott autók",
+		answers: [
+			{
+				answer: "Expedition",
+				correct: false
+			},
+			{
+				answer: "Reaver",
+				correct: false
+			},
+			{
+				answer: "Rio",
+				correct: true
+			},
+		]
+	},
+	{
+		question: "Felhőosztályok",
+		answers: [
+			{
+				answer: "Cumulus",
+				correct: true
+			},
+			{
+				answer: "Cirmius",
+				correct: false
+			},
+			{
+				answer: "Cirrus",
+				correct: true
+			},
+		]
+	},
+	{
+		question: "Szökőévek",
+		answers: [
+			{
+				answer: "1900",
+				correct: false
+			},
+			{
+				// 1752 az első szökőév
+				answer: "1748",
+				correct: false
+			},
+			{
+				answer: "2000",
+				correct: true
+			},
+		]
+	},
+	{
+		question: "Fővárosok",
+		answers: [
+			{
+				answer: "Sydney",
+				correct: false
+			},
+			{
+				answer: "Mumbai",
+				correct: false
+			},
+			{
+				answer: "Shanghai",
+				correct: false
+			},
+		]
 	}
 ] as Question[]

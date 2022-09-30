@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from "vue"
+import { computed, ref } from "vue"
 import { onKeyStroke } from "@vueuse/core"
 import useScoreStore from "../data/store/scoreStore"
 
@@ -127,7 +127,8 @@ const nextQuestion = computed(() => store.nextQuestion)
 								type="checkbox"
 								id="showQuestion"
 								aria-label="show question"
-								v-model="store.$state.showQuestion"
+								v-model="store.showQuestion"
+								@change="store.PERSIST_ITEM('showQuestion')"
 							/>
 						</td>
 					</tr>
@@ -138,11 +139,13 @@ const nextQuestion = computed(() => store.nextQuestion)
 		<br />
 		<button type="button" @click="store.RESET">Reset</button>
 		<button type="button" @click="openScoreboard">Scoreboard</button>
+		<RouterLink to="/grid">Grid</RouterLink>
 	</div>
 </template>
 
 <style lang="scss" scoped>
 @use "../style/vars" as *;
+
 .dashboard {
 	margin: 0 auto;
 	max-width: 800px;

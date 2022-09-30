@@ -6,6 +6,7 @@ import useScoreStore from "../data/store/scoreStore"
 const store = useScoreStore()
 
 const { width } = useWindowSize()
+// TODO set prop from js here --column-width
 const vw10 = computed(() => width.value / 8)
 
 watch(
@@ -37,17 +38,30 @@ watch(
 			</div>
 		</div>
 		<div class="shadow"></div>
+		<div class="question-modal" v-if="store.showQuestion">
+			<div class="question" v-html="store.currentQuestion.question"></div>
+			<div class="answers">
+				<div
+					class="answer"
+					v-for="answer in store.currentQuestion.answers"
+					:key="answer.answer"
+				>
+					{{ answer.answer }}
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <style lang="scss" scoped>
 @use "../style/vars" as *;
+@use "sass:math" as math;
 
 $column-width: var(--column-width);
 
 .scoreboard {
 	// TODO set this prop from JS
-	--column-width: 12.5vw;
+	--column-width: #{math.div(100, 8)}vw;
 	height: 100vh;
 }
 
@@ -105,5 +119,35 @@ $column-width: var(--column-width);
 		rgba(0, 0, 0, 1) 0%,
 		rgba(0, 0, 0, 0) 100%
 	);
+}
+
+.question-modal {
+	position: fixed;
+	top: 50vh;
+	left: 50vw;
+	background-color: $theme-background;
+	border: 2px solid $theme-border;
+	border-radius: 20px;
+	width: 30vw;
+	transform: translate(-50%, -50%);
+	padding: 30px;
+
+	.question {
+		line-height: 3rem;
+		font-size: 2.5rem;
+		padding: 0 0 1rem;
+		border-bottom: 2px solid $theme-border;
+	}
+
+	.answers {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		margin-top: 20px;
+		.answer {
+			padding: 20px;
+			font-size: 2rem;
+		}
+	}
 }
 </style>

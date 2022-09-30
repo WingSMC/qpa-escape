@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from "vue-router"
 
 import Dashboard from "../views/Dashboard.vue"
 import Scoreboard from "../views/Scoreboard.vue"
+import Grid from "../views/Grid.vue"
 
 const router = createRouter({
 	routes: [
@@ -19,6 +20,14 @@ const router = createRouter({
 			component: Scoreboard,
 			meta: {
 				title: "Scoreboard"
+			},
+		},
+		{
+			path: "/grid",
+			name: "grid",
+			component: Grid,
+			meta: {
+				title: "Grid"
 			},
 		},
 		{

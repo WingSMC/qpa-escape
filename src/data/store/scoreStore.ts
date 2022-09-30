@@ -9,6 +9,7 @@ interface State {
 	questions: Question[],
 	points: number[]
 	round: number,
+	showQuestion: boolean,
 }
 
 const useScoreStore = defineStore("scoreStore", {
@@ -17,6 +18,7 @@ const useScoreStore = defineStore("scoreStore", {
 		questions: createQuestions(),
 		points: JSON.parse(localStorage.getItem("points")!!) ?? [0, 0, 0],
 		round: JSON.parse(localStorage.getItem("round")!!) ?? 0,
+		showQuestion: JSON.parse(localStorage.getItem("showQuestion")!!) ?? false,
 	}) as State,
 	actions: {
 		ADD_POINTS(points: number[]) {
@@ -50,10 +52,19 @@ const useScoreStore = defineStore("scoreStore", {
 			this.PERSIST_ITEM("round")
 			return true
 		},
+		TOGGLE_QUESTION_SHOW() {
+			this.showQuestion = !this.showQuestion
+			this.PERSIST_ITEM("showQuestion")
+		},
+		HIDE_QUESTION() {
+			this.showQuestion = false
+			this.PERSIST_ITEM("showQuestion")
+		},
 		LOAD_ITEM(key: keyof State) {
 			if (key in this.$state) {
 				const item = localStorage.getItem(key)
 				if (item) {
+					// @ts-ignore
 					this[key] = JSON.parse(item)
 				}
 			} else if (key === null) {
@@ -64,6 +75,7 @@ const useScoreStore = defineStore("scoreStore", {
 			localStorage.setItem(key, JSON.stringify(this[key]))
 		},
 		RESET() {
+			if (!confirm("Biztosan újra akarod kezdeni a játékot?")) return
 			localStorage.clear()
 			this.$reset()
 		},
@@ -71,7 +83,7 @@ const useScoreStore = defineStore("scoreStore", {
 	getters: {
 		currentQuestion: (state): Question => state.questions[state.round],
 		nextQuestion: (state): Question => (
-			state.questions[state.round + 1] ?? { question: "Nincs több kédés.", answers: [] }
+			state.questions[state.round + 1] ?? { question: "❌Nincs több kédés❌", answers: [] }
 		),
 	},
 })

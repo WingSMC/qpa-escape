@@ -9,6 +9,7 @@ const teams = ref([0, 0, 0] as Array<number | string>)
 
 onKeyStroke("ArrowRight", store.NEXT_ROUND)
 onKeyStroke("ArrowLeft", store.PREV_ROUND)
+onKeyStroke("Shift", store.TOGGLE_QUESTION_SHOW)
 
 const clearField = (i: number) => (teams.value[i] ||= "")
 const fillField = (i: number) => (teams.value[i] ||= 0)
@@ -25,6 +26,7 @@ const setRound = (e: Event) => {
 const commitTeams = () => {
 	fillField(0)
 	store.NEXT_ROUND() && store.ADD_POINTS(teams.value as number[])
+	store.HIDE_QUESTION()
 	teams.value = [0, 0, 0]
 	inputs.value[0].focus()
 	clearField(0)
@@ -54,7 +56,7 @@ const nextQuestion = computed(() => store.nextQuestion)
 				</div>
 			</div>
 			<div class="task">
-				<div class="question">{{ currentQuestion.question }}</div>
+				<div class="question" v-html="currentQuestion.question"></div>
 				<div class="answers">
 					<div
 						class="answer"
@@ -105,24 +107,37 @@ const nextQuestion = computed(() => store.nextQuestion)
 				</tbody>
 				<tfoot>
 					<tr>
-						<td>Round</td>
+						<td>Round [⬅] [➡]</td>
 						<td></td>
 						<td>
 							<input
 								type="number"
 								min="0"
 								max="20"
-								:value="store.$state.round"
+								:value="store.$state.round + 1"
 								@change="setRound"
+							/>
+						</td>
+					</tr>
+					<tr>
+						<td><label for="showQuestion">Show Question [Shift]</label></td>
+						<td></td>
+						<td>
+							<input
+								type="checkbox"
+								id="showQuestion"
+								aria-label="show question"
+								v-model="store.$state.showQuestion"
 							/>
 						</td>
 					</tr>
 				</tfoot>
 			</table>
-			<button class="commit">Commit</button>
-			<button type="button" @click="store.RESET">Reset</button>
-			<button type="button" @click="openScoreboard">Scoreboard</button>
+			<button class="commit">Commit [Enter]</button>
 		</form>
+		<br />
+		<button type="button" @click="store.RESET">Reset</button>
+		<button type="button" @click="openScoreboard">Scoreboard</button>
 	</div>
 </template>
 

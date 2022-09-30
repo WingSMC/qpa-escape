@@ -2,35 +2,137 @@ import type { Question } from "../types"
 
 export default () => [
 	{
-		question: "What is the capital of the United States?",
+		question: "Fóbiák",
 		answers: [
 			{
-				answer: "Washington D.C.",
+				answer: "Amaxophobia",
 				correct: true
 			},
 			{
-				answer: "New York",
+				answer: "Acrophobia",
+				correct: true
+			},
+			{
+				answer: "Gynophobia",
+				correct: true
+			},
+		]
+	},
+	{
+		question: "Filmek beszélő állatokkal",
+		answers: [
+			{
+				answer: "Shrek",
+				correct: true
+			},
+			{
+				answer: "King-kong",
 				correct: false
 			},
 			{
-				answer: "Los Angeles",
+				answer: "A Gondozoo (Zookeeper)",
+				correct: true
+			},
+		]
+	},
+	{
+		question: "Merevedési zavarra szedett gyógyszerek",
+		answers: [
+			{
+				answer: "Allegra",
+				correct: false
+			},
+			{
+				answer: "Viagra",
+				correct: true
+			},
+			{
+				answer: "Adderall",
 				correct: false
 			},
 		]
 	},
 	{
-		question: "2 kérdés",
+		question: "Sci-Fi univerzum galaktikus birodalommal",
 		answers: [
 			{
-				answer: "1 válasz",
+				answer: "Dan Simmons: Hyperion",
 				correct: false
 			},
 			{
-				answer: "2 válasz",
+				answer: "Isaac Asimov: Az Alapítvány",
+				correct: true
+			},
+			{
+				answer: "Liu Cixin: Háromtest-probléma",
+				correct: false
+			},
+		]
+	},
+	{
+		question: "Gombafajták",
+		answers: [
+			{
+				answer: "Szikla Pirosító",
 				correct: false
 			},
 			{
-				answer: "3 válasz",
+				answer: "Nyálkás Tűpárna",
+				correct: false
+			},
+			{
+				answer: "Szemcsésnyelű fenyőtinórú",
+				correct: true
+			},
+		]
+	},
+	{
+		question: "A Gyűrűk Ura univerzum valamely 3 tünde gyűrűjének volt/aktuális tulajdonosa",
+		answers: [
+			{
+				answer: "Gandalf",
+				correct: true
+			},
+			{
+				answer: "Elrond",
+				correct: true
+			},
+			{
+				answer: "Arwen",
+				correct: false
+			},
+		]
+	},
+	{
+		question: "Millenium problémák",
+		answers: [
+			{
+				answer: "Birch és Swinnerton-Dyer-sejtés",
+				correct: true
+			},
+			{
+				answer: "P=NP probléma",
+				correct: true
+			},
+			{
+				answer: "Fermat-sejtés",
+				correct: false
+			},
+		]
+	},
+	{
+		question: "Liszt Ferenc művek",
+		answers: [
+			{
+				answer: "Mazeppa",
+				correct: true
+			},
+			{
+				answer: "Tannhäuser",
+				correct: false
+			},
+			{
+				answer: "20. Magyar rapszódia",
 				correct: false
 			},
 		]

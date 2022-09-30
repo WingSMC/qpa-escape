@@ -54,6 +54,11 @@ h1 {
 	line-height: 1.1;
 }
 
+label {
+	user-select: none;
+	cursor: pointer;
+}
+
 input,
 button {
 	margin: 0 2.5px;

@@ -25,8 +25,8 @@ const setRound = (e: Event) => {
 
 const commitTeams = () => {
 	fillField(0)
-	store.NEXT_ROUND() && store.ADD_POINTS(teams.value as number[])
-	store.HIDE_QUESTION()
+	store.ADD_POINTS(teams.value as number[])
+	store.REVEAL_ANSWERS()
 	teams.value = [0, 0, 0]
 	inputs.value[0].focus()
 	clearField(0)

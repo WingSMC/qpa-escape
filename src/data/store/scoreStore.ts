@@ -10,6 +10,7 @@ interface State {
 	points: number[]
 	round: number,
 	showQuestion: boolean,
+	showAnswers: boolean,
 }
 
 const useScoreStore = defineStore("scoreStore", {
@@ -19,6 +20,7 @@ const useScoreStore = defineStore("scoreStore", {
 		points: JSON.parse(localStorage.getItem("points")!!) ?? [0, 0, 0],
 		round: JSON.parse(localStorage.getItem("round")!!) ?? 0,
 		showQuestion: JSON.parse(localStorage.getItem("showQuestion")!!) ?? false,
+		showAnswers: JSON.parse(localStorage.getItem("showAnswers")!!) ?? false,
 	}) as State,
 	actions: {
 		ADD_POINTS(points: number[]) {
@@ -35,13 +37,17 @@ const useScoreStore = defineStore("scoreStore", {
 			const nextRound = this.round + 1
 			if (nextRound >= this.questions.length) return false
 			this.round = nextRound
+			this.showAnswers = false
 			this.PERSIST_ITEM("round")
+			this.PERSIST_ITEM("showAnswers")
 			return true
 		},
 		PREV_ROUND(): boolean {
 			if (this.$state.round <= 0) return false
 			--this.$state.round
+			this.showAnswers = false
 			this.PERSIST_ITEM("round")
+			this.PERSIST_ITEM("showAnswers")
 			return true
 		},
 		SET_ROUND(round: number): boolean {
@@ -49,7 +55,9 @@ const useScoreStore = defineStore("scoreStore", {
 				return false
 			}
 			this.round = round
+			this.showAnswers = false
 			this.PERSIST_ITEM("round")
+			this.PERSIST_ITEM("showAnswers")
 			return true
 		},
 		TOGGLE_QUESTION_SHOW() {
@@ -59,6 +67,10 @@ const useScoreStore = defineStore("scoreStore", {
 		HIDE_QUESTION() {
 			this.showQuestion = false
 			this.PERSIST_ITEM("showQuestion")
+		},
+		REVEAL_ANSWERS() {
+			this.showAnswers = true
+			this.PERSIST_ITEM("showAnswers")
 		},
 		LOAD_ITEM(key: keyof State) {
 			if (key in this.$state) {

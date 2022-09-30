@@ -38,12 +38,13 @@ watch(
 			</div>
 		</div>
 		<div class="shadow"></div>
-		<div class="question-modal" v-if="store.showQuestion">
+		<div class="question-modal" v-if="store.$state.showQuestion">
 			<div class="question" v-html="store.currentQuestion.question"></div>
 			<div class="answers">
 				<div
 					class="answer"
 					v-for="answer in store.currentQuestion.answers"
+					:class="store.$state.showAnswers && answer.correct ? 'correct' : ''"
 					:key="answer.answer"
 				>
 					{{ answer.answer }}
@@ -128,7 +129,6 @@ $column-width: var(--column-width);
 	background-color: $theme-background;
 	border: 2px solid $theme-border;
 	border-radius: 20px;
-	width: 30vw;
 	transform: translate(-50%, -50%);
 	padding: 30px;
 
@@ -147,6 +147,10 @@ $column-width: var(--column-width);
 		.answer {
 			padding: 20px;
 			font-size: 2rem;
+
+			&.correct {
+				color: rgb(49, 129, 35);
+			}
 		}
 	}
 }

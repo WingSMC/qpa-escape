@@ -3,14 +3,14 @@ import type { Team } from "../types"
 export default () => [
 	{
 		name: "Elteleportálásch",
-		logo: "https://via.placeholder.com/150",
+		logo: "/elte.jpg",
 	},
 	{
-		name: "Team 2",
-		logo: "https://via.placeholder.com/150",
+		name: "Lábosch",
+		logo: "/labosch.png",
 	},
 	{
-		name: "Team 3",
-		logo: "https://via.placeholder.com/150",
+		name: "Schugár",
+		logo: "/schugar.jpg",
 	}
 ] as Team[]
